@@ -18,7 +18,7 @@ module OIDCProvider
       oauth_response.code = authorization.code
       oauth_response.redirect_uri = @redirect_uri
       oauth_response.approve!
-      redirect_to oauth_response.location
+      redirect_to oauth_response.location, allow_other_host: true
 
       # If we ever need to support denied authorizations that is done by:
       # oauth_request.access_denied!
@@ -83,7 +83,7 @@ module OIDCProvider
         # So we will forcibly sign out the user here and then redirect them so they
         # don't get redirected back to the url that contains `prompt=login`
         unauthenticate!
-        redirect_to url_for(request.query_parameters.except(:prompt))
+        redirect_to url_for(request.query_parameters.except(:prompt)), allow_other_host: true
       end
     end
 
