@@ -5,14 +5,22 @@ module OIDCProvider
     before_action :require_access_token
 
     def show
-      render json: user_info
+      render json: user_info.merge(is_active: account.employee.active?)
     end
 
     private
 
     def user_info
-      AccountToUserInfo.new(current_token.authorization.user_info_scopes)
-                       .call(current_token.authorization.account)
+      AccountToUserInfo.new(authorization.user_info_scopes)
+                       .call(account)
+    end
+
+    def account
+      @account ||= authorization.account
+    end
+
+    def authorization
+      @authorization ||= current_token.authorization
     end
   end
 end
