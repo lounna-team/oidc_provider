@@ -5,7 +5,7 @@ module OIDCProvider
     before_action :require_access_token
 
     def show
-      render json: user_info.to_json.merge({is_active: account.employee.active?})
+      render json: JSON.parse(user_info.to_json).merge({is_active: account.active?})
     end
 
     private
