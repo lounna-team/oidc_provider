@@ -11,8 +11,8 @@ module OIDCProvider
     attribute :code, :string, default: -> { SecureRandom.hex 32 }
     attribute :expires_at, :datetime, default: -> { 5.minutes.from_now }
 
-    serialize :scopes, JSON
-    serialize :claims, JSON
+    serialize :scopes, coder: JSON
+    serialize :claims, coder: JSON
 
     def access_token
       super || (expire! && generate_access_token!)
